@@ -62,7 +62,10 @@ async fn fetch_grain_price(
     );
     let resp = client
         .get(&url)
-        .header(reqwest::header::USER_AGENT, "Mozilla/5.0 (compatible; GrainFetch/0.1)")
+        .header(
+            reqwest::header::USER_AGENT,
+            "Mozilla/5.0 (compatible; GrainFetch/0.1)",
+        )
         .send()
         .await?;
     if !resp.status().is_success() {
@@ -76,18 +79,18 @@ async fn fetch_grain_price(
         .and_then(|result| result.indicators.quote.get(0))
         .and_then(|quote| quote.close.as_ref())
         .ok_or("Unable to parse close prices")?;
-    
+
     // Filter out None values.
     let valid_closes: Vec<f64> = closes_opt.iter().filter_map(|opt| *opt).collect();
     if valid_closes.len() < 2 {
         return Err("Not enough data points returned".into());
     }
-    
+
     // Use the last two valid data points.
     let yesterday_price = valid_closes[valid_closes.len() - 2];
     let today_price = valid_closes[valid_closes.len() - 1];
     let daily_change = today_price - yesterday_price;
-    
+
     Ok(GrainData {
         name: display_name.to_string(),
         current_price: today_price,
@@ -97,7 +100,8 @@ async fn fetch_grain_price(
 
 /// Returns a vector of GrainData for common grains by concurrently fetching data
 /// from Yahoo Finance. If fetching data for a grain fails, that grain is skipped.
-pub async fn get_common_grains_data() -> Result<Vec<GrainData>, Box<dyn Error + Send + Sync + 'static>> {
+pub async fn get_common_grains_data()
+-> Result<Vec<GrainData>, Box<dyn Error + Send + Sync + 'static>> {
     // List of grain names and their Yahoo Finance tickers.
     let grains = vec![
         ("Wheat", "ZW=F"),
@@ -106,10 +110,10 @@ pub async fn get_common_grains_data() -> Result<Vec<GrainData>, Box<dyn Error + 
         ("Barley", "ZB=F"),
         ("Oats", "ZO=F"),
     ];
-    
+
     let client = Client::new();
     let mut results = Vec::new();
-    
+
     for (name, symbol) in grains {
         let client_clone = client.clone();
         match fetch_grain_price(symbol, name, client_clone).await {
@@ -117,7 +121,7 @@ pub async fn get_common_grains_data() -> Result<Vec<GrainData>, Box<dyn Error + 
             Err(e) => eprintln!("Error fetching {}: {}", name, e),
         }
     }
-    
+
     Ok(results)
 }
 
@@ -140,7 +144,7 @@ mod tests {
             }
         }
     }
-    
+
     #[tokio::test]
     async fn test_get_common_grains_data() {
         let grains_data = get_common_grains_data().await;

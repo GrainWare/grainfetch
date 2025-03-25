@@ -30,7 +30,8 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
         } else {
             format!("{:>15}", format!("({:.2})", grain.daily_change))
         };
-        let (percentage, status) = printmgr::compute_change_info(grain.daily_change, grain.current_price);
+        let (percentage, status) =
+            printmgr::compute_change_info(grain.daily_change, grain.current_price);
         let percent_str = format!("{:>12.2}%", percentage);
 
         println!(
