@@ -1,1 +1,7 @@
 /target
+
+.direnv
+result
+\#*\#
+.\#*
+*~
