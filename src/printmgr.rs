@@ -1,4 +1,4 @@
-use crossterm::style::{Stylize};
+use crossterm::style::Stylize;
 
 /// Prints a table header.
 pub fn print_table_header() {
@@ -13,7 +13,6 @@ pub fn print_table_header() {
     );
     println!("{}", "-".repeat(70));
 }
-
 
 /// Computes the percentage change and returns both the percentage and an associated status string.
 /// Assumes yesterday's price is (current_price - daily_change).
@@ -32,16 +31,16 @@ pub fn compute_change_info(daily_change: f64, current_price: f64) -> (f64, Strin
         x if x >= 30.0 => "harvest season is upon us!!",
         x if x >= 20.0 => "grain!!!",
         x if x >= 10.0 => "grain!!",
-        x if x >= 5.0  => "grain!",
-        x if x >= 1.0  => "grain",
-        x if x > -1.0  => "grain",
-        x if x > -5.0  => "oh no",
+        x if x >= 5.0 => "grain!",
+        x if x >= 1.0 => "grain",
+        x if x > -1.0 => "grain",
+        x if x > -5.0 => "oh no",
         x if x > -10.0 => "OH SHIT",
         x if x > -20.0 => "WHAT HAVE WE DONE",
         x if x > -30.0 => "WHAT HAPPENED TO HARVEST SEASON",
         x if x > -40.0 => "RAHHHHHHHHHHHHHHHHHHHH",
         x if x > -50.0 => "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
-        _              => "GRAIN IS OVER. GOODBYE.",
+        _ => "GRAIN IS OVER. GOODBYE.",
     }
     .to_string();
 
