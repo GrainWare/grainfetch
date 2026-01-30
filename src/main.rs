@@ -37,9 +37,9 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
         println!(
             "{:<10} | {} | {} | {} | {}",
             grain.name,
-            price_str.on(bg_color),
-            daily_str.on(bg_color),
-            percent_str.on(bg_color),
+            price_str.on(bg_color).black(),
+            daily_str.on(bg_color).black(),
+            percent_str.on(bg_color).black(),
             status
         );
     }
